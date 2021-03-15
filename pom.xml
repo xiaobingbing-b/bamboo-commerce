@@ -15,6 +15,7 @@
         <module>commerce-order</module>
         <module>commerce-product</module>
         <module>commerce-ware</module>
+        <module>commerce-common</module>
     </modules>
 
 </project>
