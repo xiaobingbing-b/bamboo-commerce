@@ -1,14 +1,12 @@
 package com.bamboo.commerce.member.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
+import com.bamboo.commerce.member.feign.CouponFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bamboo.commerce.member.entity.MemberEntity;
 import com.bamboo.commerce.member.service.MemberService;
@@ -29,6 +27,14 @@ import com.bamboo.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private CouponFeignService couponFeignService;
+
+    @GetMapping("/queryAllCoupon")
+    public R queryAllCoupon(){
+        return this.couponFeignService.list(new HashMap<String, Object>());
+    }
 
     /**
      * 列表

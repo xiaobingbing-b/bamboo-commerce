@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: commerce-member
+  cloud:
+    nacos:
+      config:
+        namespace: cbf896ab-e6ca-4498-a11f-f3d244e2460c
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        extension-configs[0]:
+          data-id: datasource.yml
+          group: dev
+          refresh: true
+        extension-configs[1]:
+          data-id: mybatis.xml
+          group: dev
+          refresh: true

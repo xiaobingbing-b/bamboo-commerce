@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: commerce-coupon
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 2a1c7d75-7878-40b1-88dd-709c4c09fb8a
+#        group:
+        extension-configs[0]:
+          data-id: datasource.yml
+          group: dev
+          refresh: true
+        extension-configs[1]:
+          data-id: mybatis.yml
+          group: dev
+          refresh: true
+        file-extension: yml

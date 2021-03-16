@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: test
+          uri: http://www.baidu.com
+          predicates:
+            - Path=hello
