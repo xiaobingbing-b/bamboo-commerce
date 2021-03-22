@@ -16,6 +16,7 @@
         <module>commerce-product</module>
         <module>commerce-ware</module>
         <module>commerce-common</module>
+        <module>renren-fast</module>
     </modules>
 
 
