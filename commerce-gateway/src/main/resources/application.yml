@@ -6,3 +6,10 @@ spring:
           uri: http://www.baidu.com
           predicates:
             - Path=hello
+
+        - id: admin_root
+          uri: \\renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*)./renren-fast/$\{segment}

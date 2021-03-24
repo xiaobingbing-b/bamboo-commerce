@@ -17,6 +17,7 @@
         <module>commerce-ware</module>
         <module>commerce-common</module>
         <module>renren-fast</module>
+        <module>commerce-gateway</module>
     </modules>
 
 
