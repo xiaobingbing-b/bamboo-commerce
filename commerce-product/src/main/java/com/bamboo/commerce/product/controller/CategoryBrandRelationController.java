@@ -51,7 +51,7 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation){
-		categoryBrandRelationService.save(categoryBrandRelation);
+		categoryBrandRelationService.saveEntity(categoryBrandRelation);
 
         return R.ok();
     }
@@ -72,6 +72,16 @@ public class CategoryBrandRelationController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids){
 		categoryBrandRelationService.removeByIds(Arrays.asList(ids));
+
+        return R.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/deleteById")
+    public R deleteById(@RequestBody Long id){
+		categoryBrandRelationService.removeById(id);
 
         return R.ok();
     }

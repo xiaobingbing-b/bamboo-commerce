@@ -33,11 +33,11 @@ public class CategoryBrandRelationEntity implements Serializable {
 	 */
 	private Long catelogId;
 	/**
-	 * 
+	 * 品牌名称
 	 */
 	private String brandName;
 	/**
-	 * 
+	 * 分类名称
 	 */
 	private String catelogName;
 

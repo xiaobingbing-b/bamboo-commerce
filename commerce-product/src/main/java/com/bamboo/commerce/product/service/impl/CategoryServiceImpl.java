@@ -2,6 +2,7 @@ package com.bamboo.commerce.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,6 +29,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void deleteByIds(List<Long> asList) {
+        this.baseMapper.deleteBatchIds(asList);
+    }
+
+    /**
+     * 获取这个子组所有的父id 并包含当前id
+     * @param childrenId
+     * @return
+     */
+    @Override
+    public Long[] getParentIds(Long childrenId) {
+        List<Long> list = new ArrayList<>();
+        this.parentIds(childrenId, list);
+        return list.toArray(new Long[list.size()]);
+    }
+
+    private List<Long> parentIds(Long childrenId, List<Long> list){
+        CategoryEntity entity = this.getById(childrenId);
+        if (entity != null && entity.getParentCid() != 0){
+            this.parentIds(entity.getParentCid(), list);
+        }
+        list.add(childrenId);
+        return list;
     }
 
     @Override

@@ -18,6 +18,7 @@
         <module>commerce-common</module>
         <module>renren-fast</module>
         <module>commerce-gateway</module>
+        <module>commerce-tripartite</module>
     </modules>
 
 

@@ -1,15 +1,31 @@
 spring:
+  application:
+    name: commerce-gateway
   cloud:
     gateway:
       routes:
-        - id: test
-          uri: http://www.baidu.com
+        - id: product
+          uri: lb://commerce-product
           predicates:
-            - Path=hello
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        - id: tripartite
+          uri: lb://commerce-tripartite
+          predicates:
+            - Path=/api/tripartite/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
 
         - id: admin_root
-          uri: \\renren-fast
+          uri: lb://renren-fast
           predicates:
             - Path=/api/**
           filters:
-            - RewritePath=/api/(?<segment>.*)./renren-fast/$\{segment}
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+server:
+  port: 8001
