@@ -1,8 +1,13 @@
 package com.bamboo.commerce.product.dao;
 
 import com.bamboo.commerce.product.entity.AttrEntity;
+import com.bamboo.commerce.product.vo.AttrVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Map;
 
 /**
  * 商品属性
@@ -13,5 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AttrDao extends BaseMapper<AttrEntity> {
-	
+
+    Page<AttrVo> queryForPage(Page<AttrVo> page, @Param("params") Map<String, Object> params);
 }

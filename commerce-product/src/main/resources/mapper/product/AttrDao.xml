@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bamboo.commerce.product.dao.AttrDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.bamboo.commerce.product.entity.AttrEntity" id="attrMap">
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
@@ -15,6 +15,23 @@
         <result property="catelogId" column="catelog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+    <select id="queryForPage" resultType="com.bamboo.commerce.product.vo.AttrVo" parameterType="java.util.Map">
+        SELECT
+	        a.*,
+	        b.attr_group_id AS attrGroupId,
+	        c.attr_group_name AS attrGroupName,
+	        d.name AS catelogName
+        FROM
+	        pms_attr a
+	        LEFT JOIN pms_attr_attrgroup_relation b ON a.attr_id = b.attr_id
+	        LEFT JOIN pms_attr_group c on b.attr_group_id = c.attr_group_id
+	        LEFT JOIN pms_category d on a.catelog_id = d.cat_id AND d.show_status = '1'
+	    <where>
+            <if test="params.catelogId != null and params.catelogId != 0">
+                a.catelog_id = #{params.catelogId}
+            </if>
+        </where>
+    </select>
 
 
 </mapper>

@@ -41,7 +41,7 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         String key = (String) params.get("key");
         if (StringUtils.isNoneBlank(key)){
             wrapper.and((obj) -> {
-                obj.eq("attr_group_id", key).or().like("attr_group_name", key).like("descript", key);
+                obj.eq("attr_group_id", key).or().like("attr_group_name", key).or().like("descript", key);
             });
         }
         IPage<AttrGroupEntity> page = this.page(

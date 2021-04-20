@@ -2,6 +2,7 @@ package com.bamboo.commerce.product.controller;
 
 import com.bamboo.commerce.product.entity.AttrEntity;
 import com.bamboo.commerce.product.service.AttrService;
+import com.bamboo.commerce.product.vo.AttrVo;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.common.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,8 @@ public class AttrController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
+    public R save(@RequestBody AttrVo attr){
+		attrService.saveAttr(attr);
 
         return R.ok();
     }

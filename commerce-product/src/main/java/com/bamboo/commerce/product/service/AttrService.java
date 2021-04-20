@@ -1,5 +1,6 @@
 package com.bamboo.commerce.product.service;
 
+import com.bamboo.commerce.product.vo.AttrVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.commerce.product.entity.AttrEntity;
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveAttr(AttrVo attr);
 }
 

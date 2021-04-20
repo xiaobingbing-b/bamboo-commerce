@@ -2,6 +2,7 @@ package com.bamboo.commerce.product.service.impl;
 
 import com.bamboo.commerce.product.entity.CategoryEntity;
 import com.bamboo.commerce.product.service.CategoryService;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -44,6 +45,22 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
             categoryBrandRelation.setCatelogName(categoryEntity.getName());
         }
         this.save(categoryBrandRelation);
+    }
+
+    /**
+     * 品牌名称 或者 分组名称修改了， 要同步修改 关联表，
+     * 目的 减少表关联
+     * @param relationEntity
+     */
+    @Override
+    public void updateByOtherId(CategoryBrandRelationEntity relationEntity) {
+        UpdateWrapper<CategoryBrandRelationEntity> updateWrapper = new UpdateWrapper<CategoryBrandRelationEntity>();
+        if (null != relationEntity.getBrandId() && 0 != relationEntity.getBrandId()){
+            updateWrapper.eq("brand_id", relationEntity.getBrandId());
+        } else if (null != relationEntity.getCatelogId() && 0 != relationEntity.getCatelogId()){
+            updateWrapper.eq("catelog_id", relationEntity.getCatelogId());
+        }
+        this.update(relationEntity, updateWrapper);
     }
 
 }

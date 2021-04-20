@@ -26,5 +26,7 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @return
      */
     Long[] getParentIds(Long childrenId);
+
+    void updateDetail(CategoryEntity category);
 }
 
