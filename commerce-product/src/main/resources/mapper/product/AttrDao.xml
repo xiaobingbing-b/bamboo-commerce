@@ -30,7 +30,40 @@
             <if test="params.catelogId != null and params.catelogId != 0">
                 a.catelog_id = #{params.catelogId}
             </if>
+            <if test="params.attrType != null and params.attrType != ''">
+                AND a.attr_type = #{params.attrType}
+            </if>
+            <if test="params.key != null and params.key != ''">
+                AND (a.attr_id = #{params.key} or a.attr_name like concat('%', #{params.key}, '%'))
+            </if>
         </where>
+    </select>
+
+    <select id="getAttrVoInfoById" resultType="com.bamboo.commerce.product.vo.AttrVo" parameterType="java.lang.Long">
+        SELECT
+	    a.*,
+	    b.attr_group_id
+        FROM
+	    pms_attr a
+	    LEFT JOIN pms_attr_attrgroup_relation b ON a.attr_id = b.attr_id
+	    WHERE a.attr_id = #{attrId}
+	    LIMIT 0,1
+    </select>
+
+    <select id="getAttrByGroupId" resultType="java.util.Map" parameterType="java.lang.Long">
+        SELECT
+	        a.attr_name,
+	        a.value_select
+        FROM
+	        pms_attr a
+        WHERE
+	        a.attr_id IN (
+	        SELECT
+		        t.attr_id
+	        FROM
+		        pms_attr_attrgroup_relation t
+            WHERE
+	        t.attr_group_id = #{groupId})
     </select>
 
 

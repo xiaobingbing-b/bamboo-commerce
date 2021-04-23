@@ -5,6 +5,7 @@ import com.bamboo.commerce.product.service.AttrService;
 import com.bamboo.commerce.product.vo.AttrVo;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.common.utils.R;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,10 @@ public class AttrController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    @RequestMapping("/{attrType}/list")
+    public R list(@RequestParam Map<String, Object> params, @PathVariable("attrType") String attrType){
+        attrType = StringUtils.equals(attrType, "sale") ? "0" : "1";
+        params.put("attrType", attrType);
         PageUtils page = attrService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -42,9 +45,9 @@ public class AttrController {
      */
     @RequestMapping("/info/{attrId}")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
+		AttrVo vo = this.attrService.getAttrVoInfoById(attrId);
 
-        return R.ok().put("attr", attr);
+        return R.ok().put("attr", vo);
     }
 
     /**
@@ -61,8 +64,8 @@ public class AttrController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
+    public R update(@RequestBody AttrVo attr){
+		attrService.updateAttr(attr);
 
         return R.ok();
     }

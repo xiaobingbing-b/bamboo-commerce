@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,4 +21,8 @@ import java.util.Map;
 public interface AttrDao extends BaseMapper<AttrEntity> {
 
     Page<AttrVo> queryForPage(Page<AttrVo> page, @Param("params") Map<String, Object> params);
+
+    AttrVo getAttrVoInfoById(@Param("attrId") Long attrId);
+
+    List<Map<String, Object>> getAttrByGroupId(@Param("groupId") Long groupId);
 }

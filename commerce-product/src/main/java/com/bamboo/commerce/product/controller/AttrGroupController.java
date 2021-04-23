@@ -1,5 +1,6 @@
 package com.bamboo.commerce.product.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bamboo.commerce.product.entity.AttrGroupEntity;
 import com.bamboo.commerce.product.service.AttrGroupService;
 import com.bamboo.common.utils.PageUtils;
@@ -33,6 +34,12 @@ public class AttrGroupController {
         PageUtils page = attrGroupService.queryPage(params, categoryId);
 
         return R.ok().put("page", page);
+    }
+
+    @RequestMapping("/getAttrByGroupId/{groupId}")
+    public R getAttrByGroupId(@PathVariable("groupId") Long groupId){
+        JSONArray data = this.attrGroupService.getAttrByGroupId(groupId);
+        return R.ok().put("data", data);
     }
 
 
