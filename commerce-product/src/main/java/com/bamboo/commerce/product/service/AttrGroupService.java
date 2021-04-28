@@ -1,6 +1,7 @@
 package com.bamboo.commerce.product.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.bamboo.commerce.product.entity.AttrEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.commerce.product.entity.AttrGroupEntity;
@@ -29,5 +30,13 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
      * @return
      */
     JSONArray getAttrByGroupId(Long groupId);
+
+    /**
+     * 获取这个分类下没有绑定分组的 属性
+     * @param groupId
+     * @param catelogId
+     * @return
+     */
+    JSONArray getNoBindAttrByGroupCatelogId(Long groupId, Long catelogId);
 }
 

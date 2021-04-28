@@ -17,16 +17,16 @@
     </resultMap>
     <select id="queryForPage" resultType="com.bamboo.commerce.product.vo.AttrVo" parameterType="java.util.Map">
         SELECT
-	        a.*,
-	        b.attr_group_id AS attrGroupId,
-	        c.attr_group_name AS attrGroupName,
-	        d.name AS catelogName
+        a.*,
+        b.attr_group_id AS attrGroupId,
+        c.attr_group_name AS attrGroupName,
+        d.name AS catelogName
         FROM
-	        pms_attr a
-	        LEFT JOIN pms_attr_attrgroup_relation b ON a.attr_id = b.attr_id
-	        LEFT JOIN pms_attr_group c on b.attr_group_id = c.attr_group_id
-	        LEFT JOIN pms_category d on a.catelog_id = d.cat_id AND d.show_status = '1'
-	    <where>
+        pms_attr a
+        LEFT JOIN pms_attr_attrgroup_relation b ON a.attr_id = b.attr_id
+        LEFT JOIN pms_attr_group c on b.attr_group_id = c.attr_group_id
+        LEFT JOIN pms_category d on a.catelog_id = d.cat_id AND d.show_status = '1'
+        <where>
             <if test="params.catelogId != null and params.catelogId != 0">
                 a.catelog_id = #{params.catelogId}
             </if>
@@ -64,6 +64,25 @@
 		        pms_attr_attrgroup_relation t
             WHERE
 	        t.attr_group_id = #{groupId})
+    </select>
+    <select id="getNoBindAttr" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+	        attr_id,
+	        attr_name,
+            value_select
+        FROM
+	        pms_attr
+        <where>
+            <if test="null != params.catelogId">
+                AND catelog_id = #{params.catelogId}
+            </if>
+            <if test="null != params.attrType">
+                AND attr_type = #{params.attrType}
+            </if>
+            <if test="null != params.groupId">
+                AND attr_id NOT IN ( SELECT attr_id FROM pms_attr_attrgroup_relation WHERE attr_group_id = #{params.groupId} )
+            </if>
+        </where>
     </select>
 
 

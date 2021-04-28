@@ -25,4 +25,6 @@ public interface AttrDao extends BaseMapper<AttrEntity> {
     AttrVo getAttrVoInfoById(@Param("attrId") Long attrId);
 
     List<Map<String, Object>> getAttrByGroupId(@Param("groupId") Long groupId);
+
+    List<Map<String, Object>> getNoBindAttr(@Param("params") Map<Object, Object> params);
 }

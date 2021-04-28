@@ -36,5 +36,7 @@ public interface AttrService extends IService<AttrEntity> {
      * @return
      */
     JSONArray getAttrByGroupId(Long groupId);
+
+    JSONArray getNoBindAttr(Map<Object, Object> params);
 }
 

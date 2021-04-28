@@ -107,4 +107,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         return JSONArray.parseArray(JSON.toJSONString(maps));
     }
 
+    @Override
+    public JSONArray getNoBindAttr(Map<Object, Object> params) {
+        List<Map<String, Object>> maps = this.attrDao.getNoBindAttr(params);
+        return JSONArray.parseArray(JSON.toJSONString(maps));
+    }
+
 }

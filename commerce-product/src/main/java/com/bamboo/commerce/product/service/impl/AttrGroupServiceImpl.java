@@ -2,10 +2,12 @@ package com.bamboo.commerce.product.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bamboo.commerce.product.dao.AttrGroupDao;
+import com.bamboo.commerce.product.entity.AttrEntity;
 import com.bamboo.commerce.product.entity.AttrGroupEntity;
 import com.bamboo.commerce.product.service.AttrGroupService;
 import com.bamboo.commerce.product.service.AttrService;
 import com.bamboo.commerce.product.service.CategoryService;
+import com.bamboo.common.constant.ProductConstant;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.common.utils.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -26,6 +30,9 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Autowired
     private AttrService attrService;
+
+    @Autowired
+    private AttrGroupDao attrGroupDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -67,6 +74,15 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
     public JSONArray getAttrByGroupId(Long groupId) {
 
         return this.attrService.getAttrByGroupId(groupId);
+    }
+
+    @Override
+    public JSONArray getNoBindAttrByGroupCatelogId(Long groupId, Long catelogId) {
+        Map<Object, Object> params = new HashMap<>();
+        params.put("groupId", groupId);
+        params.put("catelogId", catelogId);
+        params.put("attrType", ProductConstant.ATTR_TYPE_BASE.getValue());
+        return this.attrService.getNoBindAttr(params);
     }
 
 }
