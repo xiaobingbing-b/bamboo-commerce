@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -52,6 +53,16 @@ public class AttrAttrgroupRelationController {
     @RequestMapping("/save")
     public R save(@RequestBody AttrAttrgroupRelationEntity attrAttrgroupRelation){
 		attrAttrgroupRelationService.save(attrAttrgroupRelation);
+
+        return R.ok();
+    }
+
+    /**
+     * 批量保存
+     */
+    @RequestMapping("/saveList")
+    public R saveList(@RequestBody List<AttrAttrgroupRelationEntity> attrAttrgroupRelation){
+		attrAttrgroupRelationService.saveBatch(attrAttrgroupRelation);
 
         return R.ok();
     }
