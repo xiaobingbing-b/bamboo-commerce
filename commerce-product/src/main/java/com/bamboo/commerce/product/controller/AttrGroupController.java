@@ -1,6 +1,5 @@
 package com.bamboo.commerce.product.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.bamboo.commerce.product.entity.AttrGroupEntity;
 import com.bamboo.commerce.product.service.AttrGroupService;
 import com.bamboo.common.utils.PageUtils;
@@ -34,17 +33,6 @@ public class AttrGroupController {
         PageUtils page = attrGroupService.queryPage(params, categoryId);
 
         return R.ok().put("page", page);
-    }
-
-    /**
-     * 根据属性分组id获取 属性
-     * @param groupId
-     * @return
-     */
-    @RequestMapping("/getAttrByGroupId/{groupId}")
-    public R getAttrByGroupId(@PathVariable("groupId") Long groupId){
-        JSONArray data = this.attrGroupService.getAttrByGroupId(groupId);
-        return R.ok().put("data", data);
     }
 
 
@@ -86,18 +74,6 @@ public class AttrGroupController {
 		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
 
         return R.ok();
-    }
-
-    /**
-     * 获取这个分类下没有绑定分组的 属性
-     * @param groupId
-     * @param catelogId
-     * @return
-     */
-    @RequestMapping("/getNoBindAttr")
-    public R getNoBindAttrByGroupCatelogId(Long groupId, Long catelogId){
-        JSONArray data = this.attrGroupService.getNoBindAttrByGroupCatelogId(groupId, catelogId);
-        return R.ok().put("data", data);
     }
 
 }

@@ -1,11 +1,10 @@
 package com.bamboo.commerce.product.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.bamboo.commerce.product.vo.AttrVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.commerce.product.entity.AttrEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,24 +18,12 @@ public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    void saveAttr(AttrVo attr);
-
     /**
-     * 根据属性id 获取 属性详情信息
-     * @param attrId
+     * 获取基本属性
+     * 有bindAttrIds 要屏蔽掉这些属性
+     * @param params
      * @return
      */
-    AttrVo getAttrVoInfoById(Long attrId);
-
-    void updateAttr(AttrVo attr);
-
-    /**
-     * 根据属性分组id
-     * @param groupId
-     * @return
-     */
-    JSONArray getAttrByGroupId(Long groupId);
-
-    JSONArray getNoBindAttr(Map<Object, Object> params);
+    List<AttrEntity> getBaseAttr(Map<String, Object> params);
 }
 

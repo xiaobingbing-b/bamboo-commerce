@@ -1,18 +1,6 @@
 package com.bamboo.commerce.product.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.bamboo.commerce.product.entity.AttrAttrgroupRelationEntity;
-import com.bamboo.commerce.product.service.AttrAttrgroupRelationService;
-import com.bamboo.commerce.product.service.CategoryService;
-import com.bamboo.commerce.product.vo.AttrVo;
-import com.bamboo.common.constant.ProductConstant;
-import com.bamboo.common.utils.Constant;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,86 +19,34 @@ import com.bamboo.commerce.product.service.AttrService;
 @Service("attrService")
 public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements AttrService {
 
-    @Autowired
-    private AttrAttrgroupRelationService attrAttrgroupRelationService;
-    
-    @Autowired
-    private AttrDao attrDao;
-
-    @Autowired
-    private CategoryService categoryService;
-
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        long curPage = 1;
-        long limit = 10;
-        if(params.get(Constant.PAGE) != null){
-            curPage = Long.parseLong(params.get(Constant.PAGE).toString());
-        }
-        if(params.get(Constant.LIMIT) != null){
-            limit = Long.parseLong((String)params.get(Constant.LIMIT));
-        }
-        Page<AttrVo> page = new Page<>(curPage, limit);
-        page = this.attrDao.queryForPage(page, params);
+        IPage<AttrEntity> page = this.page(
+                new Query<AttrEntity>().getPage(params),
+                new QueryWrapper<AttrEntity>()
+        );
 
         return new PageUtils(page);
     }
 
+    /**
+     * 获取基本属性
+     * 有bindAttrIds 要屏蔽掉这些属性
+     *
+     * @param params
+     * @return
+     */
     @Override
-    public void saveAttr(AttrVo attr) {
-        AttrEntity attrEntity = new AttrEntity();
-        BeanUtils.copyProperties(attr, attrEntity);
-        this.save(attrEntity);
-        //保存 属性与 属性分组关联关系
-        if (null != attr.getAttrGroupId() && 0 != attr.getAttrGroupId() && StringUtils.equals(attr.getAttrType() + "", ProductConstant.ATTR_TYPE_BASE.getValue())){
-            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
-            attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
-            attrAttrgroupRelationEntity.setAttrId(attr.getAttrId());
-            this.attrAttrgroupRelationService.save(attrAttrgroupRelationEntity);
+    public List<AttrEntity> getBaseAttr(Map<String, Object> params) {
+        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<>();
+        List<Integer> ids = (List<Integer>) params.get("attrIds");
+        queryWrapper.eq("attr_type", "1");
+        if (null != ids){
+            queryWrapper.and(obj -> {
+                obj.notIn("attr_id", ids);
+            });
         }
-    }
-
-    @Override
-    public AttrVo getAttrVoInfoById(Long attrId) {
-        AttrVo vo = this.attrDao.getAttrVoInfoById(attrId);
-        //设置所属分类路径
-        if (null != vo.getCatelogId()){
-            vo.setCatelogPath(this.categoryService.getParentIds(vo.getCatelogId()));
-        }
-
-        return vo;
-    }
-
-    @Override
-    public void updateAttr(AttrVo attr) {
-        AttrEntity attrEntity = new AttrEntity();
-        BeanUtils.copyProperties(attr, attrEntity);
-        this.updateById(attrEntity);
-        //修改属性与分组关联信息信息
-        if (null != attr.getAttrGroupId() && 0 != attr.getAttrGroupId() && StringUtils.equals(attr.getAttrType()+"", ProductConstant.ATTR_TYPE_BASE.getValue())){
-            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
-            attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
-            attrAttrgroupRelationEntity.setAttrId(attr.getAttrId());
-            UpdateWrapper<AttrAttrgroupRelationEntity> wrapper = new UpdateWrapper<>();
-            wrapper.eq("attr_id", attrAttrgroupRelationEntity.getAttrId());
-            boolean updateSuccess = this.attrAttrgroupRelationService.update(attrAttrgroupRelationEntity, wrapper);
-            if (!updateSuccess){
-                //属性没有分组直接添加分组
-                this.attrAttrgroupRelationService.save(attrAttrgroupRelationEntity);
-            }
-        }
-    }
-
-    @Override
-    public JSONArray getAttrByGroupId(Long groupId) {
-        List<Map<String, Object>> maps = this.attrDao.getAttrByGroupId(groupId);
-        return JSONArray.parseArray(JSON.toJSONString(maps));
-    }
-
-    @Override
-    public JSONArray getNoBindAttr(Map<Object, Object> params) {
-        List<Map<String, Object>> maps = this.attrDao.getNoBindAttr(params);
-        return JSONArray.parseArray(JSON.toJSONString(maps));
+        return this.list(queryWrapper);
     }
 
 }

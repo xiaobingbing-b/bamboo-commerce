@@ -1,22 +1,25 @@
 package com.bamboo.commerce.product.vo;
 
-import com.bamboo.commerce.product.entity.AttrEntity;
 import lombok.Data;
 
-/**
- * @program: bamboo-commerce
- * @description:
- * @author: Bing.Tang
- * @create: 2021-04-20 16:11
- **/
 @Data
-public class AttrVo extends AttrEntity {
+public class AttrVo {
 
-    private Long attrGroupId;
+    /**
+     * 关联id
+     */
+    private Long relationId;
 
-    private String catelogName;
 
-    private String attrGroupName;
+    /**
+     * 可选值列表[用逗号分隔]
+     */
+    private String valueSelect;
 
-    private Long[] catelogPath;
+    /**
+     * 属性名
+     */
+    private String attrName;
+
+    private Long attrId;
 }

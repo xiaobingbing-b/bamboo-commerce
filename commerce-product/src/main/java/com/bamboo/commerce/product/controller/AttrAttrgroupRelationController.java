@@ -2,6 +2,7 @@ package com.bamboo.commerce.product.controller;
 
 import com.bamboo.commerce.product.entity.AttrAttrgroupRelationEntity;
 import com.bamboo.commerce.product.service.AttrAttrgroupRelationService;
+import com.bamboo.commerce.product.vo.AttrVo;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.common.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 
 /**
@@ -36,6 +37,16 @@ public class AttrAttrgroupRelationController {
         return R.ok().put("page", page);
     }
 
+    /**
+     * 列表
+     */
+    @RequestMapping("/queryByGroupId")
+    public R queryByGroupId(@RequestParam Map<String, Object> params){
+        List<AttrVo> vos = attrAttrgroupRelationService.queryByGroupId(params);
+        List<Long> attrIds = vos.stream().map(vo -> vo.getAttrId()).filter(id -> null != id).collect(Collectors.toList());
+        return R.ok().put("data", vos).put("attrIds", attrIds);
+    }
+
 
     /**
      * 信息
@@ -58,12 +69,13 @@ public class AttrAttrgroupRelationController {
     }
 
     /**
-     * 批量保存
+     * 一次性保存多个
+     * @param params
+     * @return
      */
-    @RequestMapping("/saveList")
-    public R saveList(@RequestBody List<AttrAttrgroupRelationEntity> attrAttrgroupRelation){
-		attrAttrgroupRelationService.saveBatch(attrAttrgroupRelation);
-
+    @PostMapping("/saveForBatch")
+    public R saveForBatch(@RequestBody Map<String, Object> params){
+        this.attrAttrgroupRelationService.saveForBatch(params);
         return R.ok();
     }
 

@@ -20,6 +20,3 @@ errno 10054 git config --global http.sslBackend "openssl"
 		</profile>
 
 		<activeProfile>jdk-1.8</activeProfile>
-
-
-Public Key Retrieval is not allowed ------> allowPublicKeyRetrieval=true

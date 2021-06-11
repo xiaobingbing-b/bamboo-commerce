@@ -1,9 +1,5 @@
 package com.bamboo.commerce.product.service.impl;
 
-import com.bamboo.commerce.product.entity.CategoryBrandRelationEntity;
-import com.bamboo.commerce.product.service.CategoryBrandRelationService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,10 +20,6 @@ import com.bamboo.commerce.product.service.CategoryService;
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
-
-
-    @Autowired
-    private CategoryBrandRelationService relationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -54,17 +46,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<Long> list = new ArrayList<>();
         this.parentIds(childrenId, list);
         return list.toArray(new Long[list.size()]);
-    }
-
-    @Override
-    public void updateDetail(CategoryEntity category) {
-        this.baseMapper.updateById(category);
-        if (StringUtils.isNotBlank(category.getName())){
-            CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
-            relationEntity.setCatelogId(category.getCatId());
-            relationEntity.setCatelogName(category.getName());
-            this.relationService.updateByOtherId(relationEntity);
-        }
     }
 
     private List<Long> parentIds(Long childrenId, List<Long> list){

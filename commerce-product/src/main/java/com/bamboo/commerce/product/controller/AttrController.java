@@ -2,14 +2,14 @@ package com.bamboo.commerce.product.controller;
 
 import com.bamboo.commerce.product.entity.AttrEntity;
 import com.bamboo.commerce.product.service.AttrService;
-import com.bamboo.commerce.product.vo.AttrVo;
 import com.bamboo.common.utils.PageUtils;
 import com.bamboo.common.utils.R;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -30,10 +30,8 @@ public class AttrController {
     /**
      * 列表
      */
-    @RequestMapping("/{attrType}/list")
-    public R list(@RequestParam Map<String, Object> params, @PathVariable("attrType") String attrType){
-        attrType = StringUtils.equals(attrType, "sale") ? "0" : "1";
-        params.put("attrType", attrType);
+    @RequestMapping("/list")
+    public R list(@RequestParam Map<String, Object> params){
         PageUtils page = attrService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -45,17 +43,27 @@ public class AttrController {
      */
     @RequestMapping("/info/{attrId}")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrVo vo = this.attrService.getAttrVoInfoById(attrId);
+		AttrEntity attr = attrService.getById(attrId);
 
-        return R.ok().put("attr", vo);
+        return R.ok().put("attr", attr);
+    }
+
+    /**
+     * 获取基本属性
+     * @return
+     */
+    @PostMapping("/getBaseAttr")
+    public R getBaseAttr(@RequestBody Map<String, Object> params){
+        List<AttrEntity> list = this.attrService.getBaseAttr(params);
+        return R.ok().put("list", list);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrVo attr){
-		attrService.saveAttr(attr);
+    public R save(@RequestBody AttrEntity attr){
+		attrService.save(attr);
 
         return R.ok();
     }
@@ -64,8 +72,8 @@ public class AttrController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrVo attr){
-		attrService.updateAttr(attr);
+    public R update(@RequestBody AttrEntity attr){
+		attrService.updateById(attr);
 
         return R.ok();
     }

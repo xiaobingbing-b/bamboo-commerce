@@ -11,5 +11,18 @@
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
 
+    <select id="queryByGroupId" parameterType="java.lang.String" resultType="com.bamboo.commerce.product.vo.AttrVo">
+        SELECT
+        a.attr_id as attrId,
+	    a.id as relationId,
+	    b.attr_name as attrName,
+	    b.value_select as valueSelect
+        FROM
+	    pms_attr_attrgroup_relation a
+	    LEFT JOIN pms_attr b ON a.attr_id = b.attr_id
+        WHERE
+	    a.attr_group_id = #{groupId}
+    </select>
+
 
 </mapper>
